@@ -18,6 +18,8 @@ func main() {
 	uploadHandler := handler.NewUploadHandler(uploadService)
 
 	http.HandleFunc("/start", uploadHandler.StartSessionHandler)
+	http.HandleFunc("/upload_chunk", uploadHandler.UploadChunkHandler)
+	http.HandleFunc("/complete_upload", uploadHandler.CompleteUploadHandler)
 
 	go uploadService.CleanExpiredSessions()
 

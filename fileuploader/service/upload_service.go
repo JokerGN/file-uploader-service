@@ -60,6 +60,13 @@ func (s *UploadService) IsUploadComplete(sessionID string) bool {
 	return exists && len(session.ReceivedChunks) == session.TotalChunks
 }
 
+func (s *UploadService) GetSession(sessionID string) (UploadSession, bool) {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+	session, exists := s.sessions[sessionID]
+	return session, exists
+}
+
 func (s *UploadService) CleanExpiredSessions() {
 	for {
 		time.Sleep(1 * time.Minute)
