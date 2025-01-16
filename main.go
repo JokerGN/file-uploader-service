@@ -24,7 +24,7 @@ func main() {
 
 	go uploadService.CleanExpiredSessions()
 
-	fmt.Println("Servier started on :8080")
+	fmt.Println("Server started on :8080")
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatal(err)
 	}
