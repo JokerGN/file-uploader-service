@@ -3,7 +3,6 @@ package handler
 import (
 	"bytes"
 	"file-uploader-service/fileuploader/service"
-	"fmt"
 	"io"
 	"mime/multipart"
 	"net/http"
@@ -57,7 +56,6 @@ func TestMultiPartUploadHandler(t *testing.T) {
 	uploadHandler.StartSessionHandler(rrStart, reqStart)
 
 	sessionID := strings.TrimPrefix(rrStart.Body.String(), "Session ID: ")
-	fmt.Println(sessionID)
 	sessionID = strings.TrimSpace(sessionID)
 
 	uploadChunk(t, uploadHandler, sessionID, 0, "This is chunk 1.")

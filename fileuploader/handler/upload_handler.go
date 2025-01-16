@@ -42,7 +42,6 @@ func (h *UploadHandler) UploadChunkHandler(w http.ResponseWriter, r *http.Reques
 	file, _, err := r.FormFile("chunk")
 	defer file.Close()
 	chunkPath := filepath.Join("../../uploads/chunks/", fmt.Sprintf("%s_%d", sessionID, chunkIndex))
-	fmt.Println(chunkPath)
 	out, _ := os.Create(chunkPath)
 	defer out.Close()
 	io.Copy(out, file)
@@ -59,7 +58,6 @@ func (h *UploadHandler) CompleteUploadHandler(w http.ResponseWriter, r *http.Req
 	}
 
 	finalFilePath := filepath.Join("../../uploads", session.FileName)
-	fmt.Println(finalFilePath)
 	finalFile, err := os.Create(finalFilePath)
 	if err != nil {
 		fmt.Println(err)
