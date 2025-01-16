@@ -32,7 +32,7 @@ file_uploader_service/
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/your-repo/file-uploader-service.git
+   git clone https://github.com/JokerGN/file-uploader-service.git
    cd file-uploader-service
    ```
 
