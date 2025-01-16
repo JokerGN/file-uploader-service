@@ -83,3 +83,13 @@ func (h *UploadHandler) CompleteUploadHandler(w http.ResponseWriter, r *http.Req
 	w.WriteHeader(http.StatusOK)
 	fmt.Fprintf(w, "File assembled successfully: %s\n", session.FileName)
 }
+
+func (h *UploadHandler) SingleFileUploadHandler(w http.ResponseWriter, r *http.Request) {
+	file, header, _ := r.FormFile("file")
+	defer file.Close()
+	filePath := filepath.Join("../../uploads", header.Filename)
+	out, _ := os.Create(filePath)
+	defer out.Close()
+	io.Copy(out, file)
+	fmt.Fprintf(w, "Single file uploaded successfully: %s\n", header.Filename)
+}

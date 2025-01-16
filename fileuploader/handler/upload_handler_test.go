@@ -15,6 +15,39 @@ import (
 	"time"
 )
 
+func TestSinglfileUploadHandler(t *testing.T) {
+	uploadService := service.NewUploadService(5 * time.Minute)
+	uploadHandler := NewUploadHandler(uploadService)
+
+	fileContent := "This is a test file."
+	body := &bytes.Buffer{}
+	writer := multipart.NewWriter(body)
+
+	part, err := writer.CreateFormFile("file", "testfile.txt")
+	if err != nil {
+		t.Fatalf("Failed to create form file: %v", err)
+	}
+	_, err = io.Copy(part, strings.NewReader(fileContent))
+	if err != nil {
+		t.Fatalf("Failed to write file content: %v", err)
+	}
+	writer.Close()
+
+	req := httptest.NewRequest(http.MethodPost, "/upload", body)
+	req.Header.Set("Content-Type", writer.FormDataContentType())
+	rr := httptest.NewRecorder()
+
+	uploadHandler.SingleFileUploadHandler(rr, req)
+
+	if rr.Code != http.StatusOK {
+		t.Errorf("Expected status OK, got %v", rr.Code)
+	}
+	if !strings.Contains(rr.Body.String(), "Single file uploaded successfully") {
+		t.Errorf("Expected upload success message, got %v", rr.Body.String())
+	}
+	os.Remove("../../uploads/testfile.txt")
+}
+
 func TestMultiPartUploadHandler(t *testing.T) {
 	uploadService := service.NewUploadService(5 * time.Minute)
 	uploadHandler := NewUploadHandler(uploadService)
